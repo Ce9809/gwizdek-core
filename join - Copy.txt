@@ -1,0 +1,77 @@
+SELECT 
+    k.imie,
+    k.nazwisko,
+    z.data_zamowienia,
+    z.wartosc
+FROM klienci k
+JOIN zamowienia z ON k.id_klienta = z.id_klienta;
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    k.miasto,
+    z.id_zamowienia,
+    z.data_zamowienia,
+    z.wartosc
+FROM klienci k
+JOIN zamowienia z ON k.id_klienta = z.id_klienta
+WHERE k.miasto = 'Warszawa';
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    z.data_zamowienia,
+    z.wartosc
+FROM klienci k
+JOIN zamowienia z ON k.id_klienta = z.id_klienta
+ORDER BY z.data_zamowienia DESC;
+
+
+
+SELECT 
+    z.id_zamowienia AS numer_zamowienia,
+    p.nazwa AS nazwa_produktu,
+    p.cena AS cena_produktu,
+    pz.ilosc,
+    k.imie,
+    k.nazwisko
+FROM zamowienia z
+JOIN klienci k ON z.id_klienta = k.id_klienta
+JOIN pozycje_zamowien pz ON z.id_zamowienia = pz.id_zamowienia
+JOIN produkty p ON pz.id_produktu = p.id_produktu;
+
+
+
+SELECT DISTINCT
+    p.nazwa AS nazwa_produktu,
+    p.kategoria,
+    p.cena,
+    COUNT(pz.id_produktu) AS liczba_zamowien
+FROM klienci k
+JOIN zamowienia z ON k.id_klienta = z.id_klienta
+JOIN pozycje_zamowien pz ON z.id_zamowienia = pz.id_zamowienia
+JOIN produkty p ON pz.id_produktu = p.id_produktu
+WHERE k.imie = 'Jan' AND k.nazwisko = 'Kowalski'
+GROUP BY p.id_produktu
+ORDER BY p.nazwa;
+
+
+
+SELECT DISTINCT
+    z.id_zamowienia,
+    z.data_zamowienia,
+    z.wartosc,
+    k.imie,
+    k.nazwisko,
+    p.nazwa AS produkt_elektronika,
+    p.kategoria
+FROM zamowienia z
+JOIN klienci k ON z.id_klienta = k.id_klienta
+JOIN pozycje_zamowien pz ON z.id_zamowienia = pz.id_zamowienia
+JOIN produkty p ON pz.id_produktu = p.id_produktu
+WHERE p.kategoria = 'Elektronika'
+ORDER BY z.id_zamowienia;

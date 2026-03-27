@@ -1,0 +1,60 @@
+SELECT COUNT(*) AS liczba_zamowien
+FROM zamowienia;
+
+
+
+SELECT SUM(wartosc) AS laczna_wartosc
+FROM zamowienia;
+
+
+
+SELECT AVG(wartosc) AS srednia_wartosc
+FROM zamowienia;
+
+
+
+SELECT 
+    MAX(wartosc) AS najdrozsze_zamowienie,
+    MIN(wartosc) AS najtansze_zamowienie
+FROM zamowienia;
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    COUNT(z.id_zamowienia) AS liczba_zamowien
+FROM klienci k
+LEFT JOIN zamowienia z ON k.id_klienta = z.id_klienta
+GROUP BY k.id_klienta, k.imie, k.nazwisko;
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    COALESCE(SUM(z.wartosc), 0) AS laczna_wartosc
+FROM klienci k
+LEFT JOIN zamowienia z ON k.id_klienta = z.id_klienta
+GROUP BY k.id_klienta, k.imie, k.nazwisko; 
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    COALESCE(AVG(z.wartosc), 0) AS srednia_wartosc_zamowienia
+FROM klienci k
+LEFT JOIN zamowienia z ON k.id_klienta = z.id_klienta
+GROUP BY k.id_klienta, k.imie, k.nazwisko;
+
+
+
+SELECT 
+    k.imie,
+    k.nazwisko,
+    COUNT(z.id_zamowienia) AS liczba_zamowien
+FROM klienci k
+JOIN zamowienia z ON k.id_klienta = z.id_klienta
+GROUP BY k.id_klienta, k.imie, k.nazwisko
+HAVING COUNT(z.id_zamowienia) > 1;
